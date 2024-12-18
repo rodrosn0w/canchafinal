@@ -1,0 +1,96 @@
+@startuml
+class Cancha1{
+# numero: String
+# reservas: List<Reserva>
+# precioBase: float
+# Cancha(String numero, float precioBase): Cancha
++ getNumero(): String
++ sosCancha(String numeroCancha): boolean
++ estaDisponible(String fecha, String hora): boolean
++ public agregarReserva(Reserva reserva): void
+# {abstract} calcularPrecio(): float
+}
+
+class SistemaAlquiler2 {
+    - {static} instancia: SistemaAlquiler
+    - List<Club> clubs
+    - List<Cliente> clientes
+
+    + getInstance(): SistemaAlquiler
+    + crearClub(String nombre, String direccion): Club
+    + crearCliente(String nombre, String apellido, String telefono): Cliente
+    + crearCanchaTenis(int idClub, String numero, float precioBase, float precioAlquilerRaqueta): void
+    + crearCanchaPadel(int idClub, String numero, float precioBase, float precioAlquilerPelota, float precioAlquilerPaleta): void
+    + crearCanchaFutbol(int idClub, String numero, float precioBase, int cantidadJugadores): void
+    + reservarCancha(int idClub, String numeroCancha, int idCliente, String fecha, String hora): Reserva
+    + calcularPrecioReserva(int idReserva): float
+
+    - buscarClub(int idClub): Club
+    - buscarCliente(int idCliente): Cliente
+    - buscarClienteConReserva(int idReserva): Cliente
+}
+
+
+class Club{
+- id: int
+- nombre: String
+- direccion: String
+- canchas: List<Cancha>
++ agregarCanchaTenis(String numero, float precioBase, float precioAlquilerRaqueta): void
++ agregarCanchaPadel(String numero, float precioBase, float precioAlquilerPaleta): void
++ agregarCanchaFutbol(String numero, float precioBase, int cantidadJugadores): void
++ tenesID(int idClub): boolean
++ getId(): int
++ buscarCancha(String numeroCancha): Cancha
+
+}
+class Cliente{
+- id: int
+- nombre: String
+- apellido: String
+- telefono: String
+- reservas: List<Reserva>
++ tenesID(int idCliente): boolean
++ getId(): int
++ reservarCancha(Club club, String numeroCancha, String fecha, String hora): Reserva
+- validarPuedeReservar(): void
+- calcularReservasActivas(): int
+- tenesReserva tenesReserva(int idReserva): boolean
++ calcularPrecioReserva (int idReserva): float
+- buscarReserva(int idReserva): Reserva
+}
+class Reserva{
+- id: int
+- cliente: Cliente
+- cancha: Cancha
+- fecha: String
+- hora: String
+- estado: EstadoReserva
++ getId(): int
++ estaActiva(): boolean
++ getFecha(): Object
++ getHora(): Object
++ sosReserva() boolean
++ calcularPrecio(): float
+}
+class SistemaAlquiler{
+- clubs: List<Club>
+- clientes: List<Cliente>
++ crearClub(String nombre, String direccion): Club
++ crearCliente(String nombre, String apellido, String telefono): Cliente
++ crearCanchaTenis(int idClub, String numero, float precioBase, float precioAlquilerRaqueta): void
++ crearCanchaPadel(int idClub, String numero, float precioBase, float precioAlquilerPaleta, float precioAlquilerPelota): void
++ crearCanchaFutbol(int idClub, String numero, float precioBase, int cantidadJugadores): void
++ reservarCancha(int idClub, String numeroCancha, int idCliente, String Fecha, String hora): Reserva
+- buscarClub(int idClub): Club
+- buscarCliente(int idCliente): Cliente
++ calcularPrecioReserva(int idReserva): float
++ buscarClienteConReserva(int idReserva): Cliente
+}
+
+enum EstadoReserva{
+Activa
+Finalizada
+
+}
+@enduml
